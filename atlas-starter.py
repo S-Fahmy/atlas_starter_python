@@ -4,7 +4,7 @@ import sys
 # Replace the placeholder data with your Atlas connection string. Be sure it includes
 # a valid username and password! Note that in a production environment,
 # you should not store your password in plain-text here.
-
+#stfu
 try:
   client = pymongo.MongoClient("mongodb+srv://root:root@cluster0.fzccu.mongodb.net/myDatabase?retryWrites=true&w=majority")
   
