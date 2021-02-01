@@ -1,6 +1,10 @@
 import pymongo
 import sys
 
+from flask import Flask
+
+app = Flask(__name__)
+
 # Replace the placeholder data with your Atlas connection string. Be sure it includes
 # a valid username and password! Note that in a production environment,
 # you should not store your password in plain-text here.
