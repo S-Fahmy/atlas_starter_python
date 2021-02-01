@@ -1,1 +1,1 @@
-web: gunicorn atlas-starter:app
+web: gunicorn main:app
