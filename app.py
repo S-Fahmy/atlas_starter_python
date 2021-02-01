@@ -7,11 +7,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def start():
-
+  
+  db = connect()
+  collection = createCollection(db)
+  insertIntoCollection(collection)
+  readCollection(collection)
+  updateCollection(collection)
+  deleteDocument(collection)
+  
+  return "check console."
+  
+def connect():
+  
 # Replace the placeholder data with your Atlas connection string. Be sure it includes
 # a valid username and password! Note that in a production environment,
 # you should not store your password in plain-text here.
-#stfu
     try:
       client = pymongo.MongoClient("mongodb+srv://root:root@cluster0.fzccu.mongodb.net/myDatabase?retryWrites=true&w=majority")
       
@@ -22,15 +32,14 @@ def start():
       sys.exit(1)
 
     # use a database named "myDatabase"
-    db = client.myDatabase
+    return client.myDatabase
+
+
+def createCollection(db):
+
 
     # use a collection named "recipes"
     my_collection = db["recipes"]
-
-    recipe_documents = [{ "name": "elotes", "ingredients": ["corn", "mayonnaise", "cotija cheese", "sour cream", "lime"], "prep_time": 35 },
-                        { "name": "loco moco", "ingredients": ["ground beef", "butter", "onion", "egg", "bread bun", "mushrooms"], "prep_time": 54 },
-                        { "name": "patatas bravas", "ingredients": ["potato", "tomato", "olive oil", "onion", "garlic", "paprika"], "prep_time": 80 },
-                        { "name": "fried rice", "ingredients": ["rice", "soy sauce", "egg", "onion", "pea", "carrot", "sesame oil"], "prep_time": 40 }]
 
     # drop the collection in case it already exists
     try:
@@ -40,12 +49,22 @@ def start():
     except pymongo.errors.OperationFailure:
       print("An authentication error was received. Are your username and password correct in your connection string?")
       sys.exit(1)
+      
+    return my_collection
+  
+  
+def insertIntoCollection(my_collection):
 
     # INSERT DOCUMENTS
     #
     # You can insert individual documents using collection.insert_one().
     # In this example, we're going to create four documents and then 
     # insert them all with insert_many().
+    recipe_documents = [{ "name": "elotes", "ingredients": ["corn", "mayonnaise", "cotija cheese", "sour cream", "lime"], "prep_time": 35 },
+                    { "name": "loco moco", "ingredients": ["ground beef", "butter", "onion", "egg", "bread bun", "mushrooms"], "prep_time": 54 },
+                    { "name": "patatas bravas", "ingredients": ["potato", "tomato", "olive oil", "onion", "garlic", "paprika"], "prep_time": 80 },
+                    { "name": "fried rice", "ingredients": ["rice", "soy sauce", "egg", "onion", "pea", "carrot", "sesame oil"], "prep_time": 40 }]
+
 
     try: 
        result = my_collection.insert_many(recipe_documents)
@@ -59,7 +78,8 @@ def start():
       print("I inserted %x documents." %(inserted_count))
 
       print("\n")
-
+      
+def readCollection(my_collection):
     # FIND DOCUMENTS
     #
     # Now that we have data in Atlas, we can read it. To retrieve all of
@@ -90,6 +110,8 @@ def start():
       print("I didn't find any recipes that contain 'potato' as an ingredient.")
     print("\n")
 
+
+def updateCollection(my_collection):
     # UPDATE A DOCUMENT
     #
     # You can update a single document or multiple documents in a single call.
@@ -107,6 +129,8 @@ def start():
       print("I didn't find any recipes that contain 'potato' as an ingredient.")
     print("\n")
 
+
+def deleteDocument(my_collection):
     # DELETE DOCUMENTS
     #
     # As with other CRUD methods, you can delete a single document 
