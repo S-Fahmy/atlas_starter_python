@@ -15,7 +15,7 @@ def start():
   updateCollection(collection)
   deleteDocument(collection)
   
-  return "check console."
+  return "check logs."
   
 def connect():
   
